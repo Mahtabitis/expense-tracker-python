@@ -1,8 +1,17 @@
-print("=== Expense Tracker ===")
+import json
 
-expenses = []
+try:
+  with open("expenses.json", "r") as file:
+    expenses = json.load(file)
+
+except FileNotFoundError:
+    expenses = []
+
+    with open("expenses.json", "w") as file:
+        json.dump(expenses, file)
 
 while True:
+    print("=== Expense Tracker ===")
     print("Menu:")
     print("1. Add new expense")
     print("2. View all expenses")
@@ -24,6 +33,9 @@ while True:
             }
 
             expenses.append(expense)
+
+            with open("expenses.json", "w") as file:
+              json.dump(expenses, file)
 
             print("Expense added successfully!")
 
