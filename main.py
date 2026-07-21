@@ -1,31 +1,40 @@
 import json
 
-try:
-  with open("expenses.json", "r") as file:
-    expenses = json.load(file)
+def load_expenses():
+     
+     try: 
+  
+      with open("expenses.json", "r") as file:
+           return json.load(file)
+           
+     except FileNotFoundError:
+      expenses = load_expenses()
 
-except FileNotFoundError:
-    expenses = []
+     with open("expenses.json", "w") as file:
+        json.dump(expenses, file)
+
+def save_expenses():
 
     with open("expenses.json", "w") as file:
         json.dump(expenses, file)
 
-while True:
-    print("=== Expense Tracker ===")
-    print("Menu:")
-    print("1. Add new expense")
-    print("2. View all expenses")
-    print("3. Calculate total")
-    print("4. Exit")
+def get_amount():
 
-    choice = input("Choose an option: ")
-# used the double quotation for numbers because output of input() is held in a string
-    if choice == "1":
+    while True:
 
+        try:
+            amount = float(input("Amount: "))
+            return amount
+
+        except ValueError:
+            print("Please enter a valid number.")
+
+def add_expense() :
+ 
         while True:
 
             name = input("Expense name: ")
-            amount = float(input("Amount: "))
+            amount = get_amount()
 
             expense = {
                 "name": name,
@@ -34,8 +43,7 @@ while True:
 
             expenses.append(expense)
 
-            with open("expenses.json", "w") as file:
-              json.dump(expenses, file)
+            save_expenses()
 
             print("Expense added successfully!")
 
@@ -44,23 +52,53 @@ while True:
             if another != "yes" and another != "y":
                 break
 
-    elif choice == "2":
+def view_expenses():
 
-        if not expenses:
+    if not expenses:
             print("You have not added any expenses yet.")
-        else:
+    else:
              print("Your expenses:")
 
              for expense in expenses:
                   print(f"{expense['name']}: ${expense['amount']}")
-           
+
+def calculate_total():
+     
+     total = 0
+
+     for expense in expenses:
+        total += expense["amount"]
+
+     print(f"Total: ${total}")
+
+
+
+expenses = load_expenses()
+
+while True: 
+
+    print("=== Expense Tracker ===")
+    print("Menu:")
+    print("1. Add new expense")
+    print("2. View all expenses")
+    print("3. Calculate total")
+    print("4. Exit")
+
+    choice = input("Choose an option: ")
+
+    if choice == "1":
+
+        add_expense()
+
+    elif choice == "2":
+        
+        view_expenses()
+
+        
     elif choice == "3":
-        total = 0
 
-        for expense in expenses:
-            total += expense["amount"]
-
-        print(f"Total: ${total}")
+        calculate_total()
+       
 
     elif choice == "4":
         print("Goodbye!")
