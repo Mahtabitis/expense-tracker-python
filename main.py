@@ -1,3 +1,4 @@
+from datetime import datetime
 import json
 
 def load_expenses():
@@ -34,11 +35,16 @@ def add_expense() :
         while True:
 
             name = input("Expense name: ")
+            category = input("Category: ")
             amount = get_amount()
+
+            date = datetime.today().strftime("%Y-%m-%d")
 
             expense = {
                 "name": name,
-                "amount": amount
+                "category": category,
+                "amount": amount,
+                "date": date
             }
 
             expenses.append(expense)
@@ -60,7 +66,7 @@ def view_expenses():
              print("Your expenses:")
 
              for expense in expenses:
-                  print(f"{expense['name']}: ${expense['amount']}")
+                  print(f"{expense['date']} | {expense['name']} | {expense.get('category' , 'unknown')} | ${expense['amount']}")
 
 def calculate_total():
      
