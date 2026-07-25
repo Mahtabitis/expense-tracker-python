@@ -1,5 +1,16 @@
 from datetime import datetime
 import json
+categories = [
+    "Food",
+    "Transportation",
+    "Shopping",
+    "Education",
+    "Entertainment",
+    "Bills",
+    "Healthcare",
+    "Housing",
+    "Other"
+]
 
 def load_expenses():
      
@@ -30,14 +41,39 @@ def get_amount():
         except ValueError:
             print("Please enter a valid number.")
 
-def add_expense() :
+def get_category():
+            
+            try:
+    
+                 number = int(input("Please choose a Category : \n"
+                " 1. Food \n"
+                " 2. Transportation \n"
+                " 3. Shopping \n"
+                " 4. Education \n"
+                " 5. Entertainment \n"
+                " 6. Bills \n"
+                " 7. Healthcare \n"
+                " 8. Housing \n"
+                " 9. Other \n" ))
+                 
+                 if 1 <= number <= len(categories):
+                   return categories[number - 1]
+                 else:
+                   print("Invalid category.")
+    
+            except ValueError:
+                 print("Please enter a number.")
+
+
+def add_expense():
  
         while True:
 
             name = input("Expense name: ")
-            category = input("Category: ")
+            category = get_category()
             amount = get_amount()
 
+    
             date = datetime.today().strftime("%Y-%m-%d")
 
             expense = {
