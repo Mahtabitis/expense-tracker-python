@@ -1,16 +1,5 @@
 from datetime import datetime
 import json
-categories = [
-    "Food",
-    "Transportation",
-    "Shopping",
-    "Education",
-    "Entertainment",
-    "Bills",
-    "Healthcare",
-    "Housing",
-    "Other"
-]
 
 def load_expenses():
      
@@ -42,6 +31,8 @@ def get_amount():
             print("Please enter a valid number.")
 
 def get_category():
+
+    while True:
             
             try:
     
@@ -114,6 +105,48 @@ def calculate_total():
      print(f"Total: ${total}")
 
 
+def delete_expense():
+ 
+  try:
+
+    if not expenses:
+      print("No expenses to delete.")
+      return
+
+    for index, expense in enumerate(expenses, start=1):
+     print(f"{index}. {expense['name']} - ${expense['amount']}")
+
+    delete = int(input("Select expense to delete: "))
+
+    if 1 <= delete <= len(expenses):
+        certainty = input("Are you sure? ").strip().lower()
+
+        if certainty == "yes" or certainty == "y" :
+            expenses.pop(delete - 1)
+            print("Expense deleted successfully!")
+        else:
+            print("Deletion cancelled.")
+        
+    else:
+        print("Invalid expense.")
+        
+    save_expenses()
+
+  except ValueError:
+    print("Please enter a number.")
+
+
+categories = [
+    "Food",
+    "Transportation",
+    "Shopping",
+    "Education",
+    "Entertainment",
+    "Bills",
+    "Healthcare",
+    "Housing",
+    "Other"
+]
 
 expenses = load_expenses()
 
@@ -124,7 +157,8 @@ while True:
     print("1. Add new expense")
     print("2. View all expenses")
     print("3. Calculate total")
-    print("4. Exit")
+    print("4. Delete expense")
+    print("5. Exit")
 
     choice = input("Choose an option: ")
 
@@ -140,9 +174,13 @@ while True:
     elif choice == "3":
 
         calculate_total()
-       
 
     elif choice == "4":
+
+        delete_expense()
+       
+
+    elif choice == "5":
         print("Goodbye!")
         break
 
