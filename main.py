@@ -114,7 +114,7 @@ def delete_expense():
       return
 
     for index, expense in enumerate(expenses, start=1):
-     print(f"{index}. {expense['name']} - ${expense['amount']}")
+      print(f"{index}. {expense['name']} - ${expense['amount']}")
 
     delete = int(input("Select expense to delete: "))
 
@@ -134,6 +134,36 @@ def delete_expense():
 
   except ValueError:
     print("Please enter a number.")
+
+def edit_expense():
+  try:
+
+    if not expenses:
+      print("No expenses to edit.")
+      return
+
+    for index, expense in enumerate(expenses, start=1):
+      print(f"{index}. {expense['name']} | {expense['category']} | ${expense['amount']}")
+
+    edit = int(input("Select expense to edit: "))
+
+    if 1 <= edit <= len(expenses):
+            
+        expense = expenses[edit - 1]
+        expense["name"] = input("New expense name: ")
+        expense["amount"] = get_amount()
+        expense["category"] = get_category()
+
+        save_expenses()
+        print("Expense updated successfully!")
+            
+            
+    else:
+        print("Invalid expense.")
+
+
+  except ValueError:
+      print("Please enter a number.")
 
 
 categories = [
@@ -158,7 +188,8 @@ while True:
     print("2. View all expenses")
     print("3. Calculate total")
     print("4. Delete expense")
-    print("5. Exit")
+    print("5. Edit expense")
+    print("6. Exit")
 
     choice = input("Choose an option: ")
 
@@ -178,9 +209,13 @@ while True:
     elif choice == "4":
 
         delete_expense()
-       
 
     elif choice == "5":
+    
+        edit_expense()
+       
+
+    elif choice == "6":
         print("Goodbye!")
         break
 
