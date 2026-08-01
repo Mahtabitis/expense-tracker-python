@@ -174,6 +174,8 @@ categories = [
     "Entertainment",
     "Bills",
     "Healthcare",
+    "personal care" ,
+    "gifts" ,
     "Housing",
     "Other"
 ]

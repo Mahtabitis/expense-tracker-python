@@ -1,0 +1,166 @@
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+
+    font-family:Poppins,sans-serif;
+    background:#101010;
+    color:white;
+
+}
+
+.container{
+
+    width:90%;
+    max-width:1100px;
+
+    margin:40px auto;
+
+}
+
+h1{
+
+    text-align:center;
+    margin-bottom:30px;
+
+}
+
+.subtitle{
+    text-align: center;
+    color: #b3b3b3;
+    font-size: 16px;
+    margin-top: -10px;
+    margin-bottom: 30px;
+}
+
+.month{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    margin-bottom:25px;
+
+}
+
+.month button{
+
+    width:40px;
+    height:40px;
+
+    font-size:18px;
+
+}
+
+.add-btn{
+
+    width:100%;
+
+    padding:15px;
+
+    font-size:18px;
+
+    margin-bottom:30px;
+
+    cursor:pointer;
+
+}
+
+.card{
+
+    background:#1f1f1f;
+
+    border-radius:15px;
+
+    padding:20px;
+
+    margin-bottom:30px;
+
+}
+
+.expense-list{
+
+    list-style:none;
+
+}
+
+.expense-list li{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    padding:15px 0;
+
+    border-bottom:1px solid #444;
+
+}
+
+.icons{
+
+    cursor:pointer;
+
+}
+
+.bottom{
+
+    display:grid;
+
+    grid-template-columns:1fr 1fr;
+
+    gap:20px;
+
+}
+
+.category-list{
+
+    list-style:none;
+
+}
+
+.category-list li{
+
+    padding:10px 0;
+
+}
+
+.circle{
+
+    width:150px;
+
+    height:150px;
+
+    border:10px solid #7f5af0;
+
+    border-radius:50%;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    margin:20px auto;
+
+    font-size:28px;
+
+    font-weight:bold;
+
+}
+
+@media(max-width:768px){
+
+.bottom{
+
+grid-template-columns:1fr;
+
+}
+
+}
