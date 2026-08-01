@@ -1,47 +1,93 @@
 # Expense Tracker
 
-A simple command-line expense tracker built with Python. This project is being developed incrementally to practice Python programming, software engineering principles, and user-centered design.
+A simple expense tracking application built to help users record, organize, and manage their daily expenses.
+
+This project started as a command-line application in Python and is gradually being developed into a web application using Flask. The main goal is to create a simple and user-friendly way to keep track of personal expenses while improving my understanding of Python, web development, and user interface design.
 
 ## Features
 
-- Add one or multiple expenses
-- View all recorded expenses
-- Calculate the total amount of expenses
-- Save expenses to a JSON file
-- Automatically load saved expenses when the program starts
-- Automatically create the JSON file if it does not exist
-- Validate user input for expense amounts
+### Current Features
 
-## Technologies
+* Add new expenses
+* View saved expenses
+* Edit existing expenses
+* Delete expenses
+* Organize expenses by category
+* Store expense data using JSON
+* Basic input validation
 
-- Python 3
-- JSON
-- Git
-- GitHub
+### Web Version (In Progress)
+
+* Flask-based web interface
+* User-friendly layout for managing expenses
+* HTML/CSS based interface
+
+## Technologies Used
+
+* Python
+* Flask
+* HTML
+* CSS
+* JSON
 
 ## Project Structure
 
-```text
-expense-tracker/
-│── main.py
-│── expenses.json
-└── README.md
 ```
-
-## Current Status
-
-The project is under active development, and new features are added as the project grows.
+expense-tracker/
+│
+├── main.py              # Command-line version
+├── app.py               # Flask application
+├── expenses.json        # Expense data storage
+│
+├── templates/
+│   └── index.html       # Web page templates
+│
+└── static/
+    └── style.css        # Styling files
+```
 
 ## Future Improvements
 
-- Build a web version with FastAPI
-- Add a database using SQLite
-- Create a responsive user interface
-- Implement user authentication
-- Generate expense reports and charts
+Some features I plan to add:
+
+* Connect the application to a database
+* Add monthly expense tracking
+* Improve filtering and searching options
+* Add data visualization for spending patterns
+* Improve the overall user experience
+
+## Motivation
+
+I built this project as a way to practice Python programming and gradually explore web application development. While developing it, I am focusing not only on functionality but also on creating a cleaner and more intuitive experience for users.
+
+## How to Run
+
+### Run the Command-Line Version
+
+```
+python main.py
+```
+
+### Run the Flask Version
+
+Install Flask:
+
+```
+pip install flask
+```
+
+Run the application:
+
+```
+python app.py
+```
+
+Then open:
+
+```
+http://127.0.0.1:5000
+```
 
 ## Author
 
-**Mahtab Ramezani**
-
-GitHub: https://github.com/Mahtabitis
+Mahtab Ramezani
