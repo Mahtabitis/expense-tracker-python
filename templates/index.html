@@ -14,7 +14,7 @@
 
 <body>
 
-<div class="container">
+ <div class="container">
 
     <h1>Expense Tracker</h1>
     <p class="subtitle">
@@ -32,8 +32,8 @@
     </div>
 
 
-    <button class="add-btn">
-        + Add New Expense
+    <button class="add-btn" onclick="openForm()">
+    + Add New Expense
     </button>
 
 
@@ -41,63 +41,41 @@
 
         <h3>Expense History</h3>
 
-        <ul class="expense-list">
+<table>
 
-            <li>
+    <tr>
 
-                <div>
+        <th>Name</th>
+        <th>Category</th>
+        <th>Amount</th>
+        <th>Date</th>
+        <th>Action</th>
 
-                    <strong>Book</strong><br>
-                    Education
+    </tr>
 
-                </div>
+    {% for expense in expenses %}
 
-                <div>
+    <tr>
 
-                    $6 <br>
+        <td>{{ expense.name }}</td>
 
-                    24 Jul
+        <td>{{ expense.category if expense.category else "Unknown" }}</td>
 
-                </div>
+        <td>${{ expense.amount }}</td>
 
-                <div class="icons">
+        <td>{{ expense.date }}</td>
 
-                    ✏️ 🗑️
+        <td>✏️ 🗑️</td>
 
-                </div>
+    </tr>
 
-            </li>
+    {% endfor %}
 
-            <li>
+</table>
 
-                <div>
+<h4>Total : ${{ total }}</h4>
 
-                    <strong>Food</strong><br>
-                    Restaurant
-
-                </div>
-
-                <div>
-
-                    $12 <br>
-
-                    25 Jul
-
-                </div>
-
-                <div class="icons">
-
-                    ✏️ 🗑️
-
-                </div>
-
-            </li>
-
-        </ul>
-
-        <h4>Total : $18</h4>
-
-    </section>
+</section>
 
 
     <div class="bottom">
@@ -151,5 +129,44 @@
 
 </div>
 
+<div id="expense-form" class="modal">
+
+    <div class="modal-content">
+
+        <h2>Add Expense</h2>
+
+        <input type="text" placeholder="Expense name">
+
+        <input type="text" placeholder="Category">
+
+        <input type="number" placeholder="Amount">
+
+        <input type="date">
+
+        <button>
+            Save
+        </button>
+
+        <button onclick="closeForm()">
+            Cancel
+        </button>
+
+    </div>
+
+</div>
+
+
+<script>
+
+function openForm(){
+    document.getElementById("expense-form").style.display = "block";
+}
+
+
+function closeForm(){
+    document.getElementById("expense-form").style.display = "none";
+}
+
+</script>
 </body>
 </html>
