@@ -14,7 +14,7 @@
 
 <body>
 
- <div class="container">
+  <div class="container">
 
     <h1>Expense Tracker</h1>
     <p class="subtitle">
@@ -23,11 +23,15 @@
 
     <div class="month">
 
+        <a href="/?month={{ previous_month }}">
         <button>&lt;</button>
+        </a>
 
-        <h2>January</h2>
+        <h2>{{ month_name }}</h2>
 
+        <a href="/?month={{ next_month }}">
         <button>&gt;</button>
+        </a>
 
     </div>
 
@@ -67,12 +71,12 @@
 
         <td class="actions">
 
-     <button onclick="openEditForm({{ loop.index0 }})">
+     <button onclick="openEditForm({{ expense.index }})">
         ✏️
       </button>
 
        <form
-        action="/delete/{{ loop.index0 }}"
+        action="/delete/{{ expense.index }}"
         method="POST"
         style="display:inline;"
         >
@@ -267,7 +271,7 @@ function openEditForm(index) {
 
     const expenses = {{ expenses | tojson }};
 
-    const expense = expenses[index];
+    const expense = expenses.find(e => e.index === index);
 
     document.getElementById("edit-name").value = expense.name;
     document.getElementById("edit-category").value = expense.category;
