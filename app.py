@@ -116,5 +116,85 @@ def delete_expense(index):
 
     return redirect(url_for("home"))
 
+@app.route("/api/expenses", methods=["GET"])
+def get_expenses():
+    with open("expenses.json", "r") as file:
+        expenses = json.load(file)
+
+    return expenses
+
+@app.route("/api/expenses", methods=["POST"])
+def create_expense():
+    data = request.get_json()
+
+    name = data["name"]
+    category = data["category"]
+    amount = float(data["amount"])
+    date = data["date"]
+
+    new_expense = {
+        "name": name,
+        "category": category,
+        "amount": amount,
+        "date": date
+    }
+
+    with open("expenses.json", "r") as file:
+        expenses = json.load(file)
+
+    expenses.append(new_expense)
+
+    with open("expenses.json", "w") as file:
+        json.dump(expenses, file, indent=4)
+
+    return new_expense, 201
+
+@app.route("/api/expenses/<int:index>", methods=["PATCH"])
+def update_expense(index):
+    data = request.get_json()
+
+    with open("expenses.json", "r") as file:
+        expenses = json.load(file)
+
+    if index < 0 or index >= len(expenses):
+        return {"error": "Expense not found"}, 404
+
+    expense = expenses[index]
+
+    if "name" in data:
+        expense["name"] = data["name"]
+
+    if "category" in data:
+        expense["category"] = data["category"]
+
+    if "amount" in data:
+        expense["amount"] = float(data["amount"])
+
+    if "date" in data:
+        expense["date"] = data["date"]
+
+    with open("expenses.json", "w") as file:
+        json.dump(expenses, file, indent=4)
+
+    return expense, 200
+
+@app.route("/api/expenses/<int:index>", methods=["DELETE"])
+def delete_expense_api(index):
+    with open("expenses.json", "r") as file:
+        expenses = json.load(file)
+
+    if index < 0 or index >= len(expenses):
+        return {"error": "Expense not found"}, 404
+
+    deleted_expense = expenses.pop(index)
+
+    with open("expenses.json", "w") as file:
+        json.dump(expenses, file, indent=4)
+
+    return {
+        "message": "Expense deleted successfully",
+        "expense": deleted_expense
+    }, 200
+
 if __name__ == "__main__":
     app.run(debug=True)
