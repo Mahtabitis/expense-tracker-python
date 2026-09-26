@@ -4,6 +4,9 @@ import json
 
 app = Flask(__name__)
 
+def get_next_id(expenses):
+    return max((expense["id"] for expense in expenses), default=0) + 1
+
 @app.route("/")
 def home():
 
@@ -118,29 +121,47 @@ def delete_expense(index):
 
 @app.route("/api/expenses", methods=["GET"])
 def get_expenses():
-    with open("expenses.json", "r") as file:
-        expenses = json.load(file)
 
-    return expenses
+    try:
+        with open("expenses.json", "r") as file:
+            expenses = json.load(file)
+    except FileNotFoundError:
+        return {"error": "Expenses file not found"}, 500
+
+    return expenses, 200
 
 @app.route("/api/expenses", methods=["POST"])
 def create_expense():
+
     data = request.get_json()
 
-    name = data["name"]
-    category = data["category"]
-    amount = float(data["amount"])
-    date = data["date"]
+    if not data:
+        return {"error": "Request body is required"}, 400
 
-    new_expense = {
-        "name": name,
-        "category": category,
-        "amount": amount,
-        "date": date
-    }
+    required_fields = ["name", "category", "amount", "date"]
+
+    for field in required_fields:
+        if field not in data:
+            return {"error": f"{field} is required"}, 400
+
+    try:
+        amount = float(data["amount"])
+    except (ValueError, TypeError):
+        return {"error": "Amount must be a number"}, 400
+
+    if amount <= 0:
+        return {"error": "Amount must be greater than 0"}, 400
 
     with open("expenses.json", "r") as file:
         expenses = json.load(file)
+
+    new_expense = {
+        "id": get_next_id(expenses),
+        "name": data["name"],
+        "category": data["category"],
+        "amount": amount,
+        "date": data["date"]
+    }
 
     expenses.append(new_expense)
 
@@ -149,17 +170,24 @@ def create_expense():
 
     return new_expense, 201
 
-@app.route("/api/expenses/<int:index>", methods=["PATCH"])
-def update_expense(index):
+@app.route("/api/expenses/<int:id>", methods=["PATCH"])
+def update_expense(id):
+
     data = request.get_json()
+
+    if not data:
+        return {"error": "Request body is required"}, 400
 
     with open("expenses.json", "r") as file:
         expenses = json.load(file)
 
-    if index < 0 or index >= len(expenses):
-        return {"error": "Expense not found"}, 404
+    expense = next(
+        (expense for expense in expenses if expense["id"] == id),
+        None
+    )
 
-    expense = expenses[index]
+    if expense is None:
+        return {"error": "Expense not found"}, 404
 
     if "name" in data:
         expense["name"] = data["name"]
@@ -168,7 +196,15 @@ def update_expense(index):
         expense["category"] = data["category"]
 
     if "amount" in data:
-        expense["amount"] = float(data["amount"])
+        try:
+            amount = float(data["amount"])
+        except (ValueError, TypeError):
+            return {"error": "Amount must be a number"}, 400
+
+        if amount <= 0:
+            return {"error": "Amount must be greater than 0"}, 400
+
+        expense["amount"] = amount
 
     if "date" in data:
         expense["date"] = data["date"]
@@ -178,22 +214,25 @@ def update_expense(index):
 
     return expense, 200
 
-@app.route("/api/expenses/<int:index>", methods=["DELETE"])
-def delete_expense_api(index):
+@app.route("/api/expenses/<int:id>", methods=["DELETE"])
+def delete_expense_api(id):
+
     with open("expenses.json", "r") as file:
         expenses = json.load(file)
 
-    if index < 0 or index >= len(expenses):
+    expense = next((expense for expense in expenses if expense["id"] == id), None)
+
+    if expense is None:
         return {"error": "Expense not found"}, 404
 
-    deleted_expense = expenses.pop(index)
+    expenses.remove(expense)
 
     with open("expenses.json", "w") as file:
         json.dump(expenses, file, indent=4)
 
     return {
         "message": "Expense deleted successfully",
-        "expense": deleted_expense
+        "expense": expense
     }, 200
 
 if __name__ == "__main__":

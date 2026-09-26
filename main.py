@@ -68,10 +68,11 @@ def add_expense():
             date = datetime.today().strftime("%Y-%m-%d")
 
             expense = {
-                "name": name,
-                "category": category,
-                "amount": amount,
-                "date": date
+                "id": get_next_id(expenses),
+                "name": request.form["name"],
+                "category": request.form["category"],
+                "amount": float(request.form["amount"]),
+                "date": request.form["date"]
             }
 
             expenses.append(expense)
